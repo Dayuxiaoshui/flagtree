@@ -9,6 +9,7 @@
 #include "triton-shared/TritonToLinalgIncubated/TritonToLinalgIncubatedPass.h"
 #include "triton-shared/TritonToHIVM/TritonToHIVM.h"
 #include "triton-shared/TritonToLLVM/TritonToLLVM.h"
+#include "triton-shared/TritonToUnstructureIncubated/UnstructureConversionPass.h"
 
 #define PY_SSIZE_T_CLEAN
 #include <pybind11/pybind11.h>
@@ -19,6 +20,8 @@ void init_triton_ascend_passes_convert(py::module &&m) {
                      mlir::triton::createTritonToLinalgExperimentalPass);
   ADD_PASS_WRAPPER_0("add_triton_linearize",
                      mlir::triton::createTritonLinearizePass);
+  ADD_PASS_WRAPPER_0("add_triton_to_unstructure",
+                     mlir::triton::createTritonToUnstructureIncubatedPass);
   ADD_PASS_WRAPPER_0("add_triton_to_hivm",
                      mlir::triton::createTritonToHIVMPass);
   ADD_PASS_WRAPPER_0("add_triton_to_hfusion",
