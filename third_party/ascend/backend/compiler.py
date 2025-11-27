@@ -73,6 +73,8 @@ def ttir_to_linalg(mod, metadata, opt, *, named_ops=False):
     #ascend.passes.convert.add_triton_to_linalg_pipeline(pm)
     ascend.passes.convert.add_triton_discretemaskaccessconversion(pm)
     ascend.passes.convert.add_triton_linearize(pm)
+    ascend.passes.convert.add_triton_to_annotation(pm)
+    ascend.passes.convert.add_triton_to_unstructure(pm)
     ascend.passes.convert.add_triton_to_hivm(pm)
     ascend.passes.convert.add_triton_to_hfusion(pm)
     ascend.passes.convert.add_triton_to_llvm(pm)
