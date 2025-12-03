@@ -1681,8 +1681,8 @@ def dot_scaled(lhs: tl.tensor, lhs_scale: tl.tensor, lhs_format, rhs: tl.tensor,
 
     flagtree_backend_specialization('check_dot_scaled_lhs_scale_dtype', lhs_scale)
     flagtree_backend_specialization('check_dot_scaled_rhs_scale_dtype', rhs_scale, rhs_scale_is_none)
-    lhs = flagtree_backend_specialization('dot_scaled_lhs_bitcast_to_fp_type')
-    rhs = flagtree_backend_specialization('dot_scaled_rhs_bitcast_to_fp_type')
+    lhs = flagtree_backend_specialization('dot_scaled_lhs_bitcast_to_fp_type', lhs, lhs_format, builder)
+    rhs = flagtree_backend_specialization('dot_scaled_rhs_bitcast_to_fp_type', rhs, rhs_format, builder)
 
     flagtree_backend_specialization('check_dot_scaled_dimension', lhs, rhs)
     M = lhs.type.shape[-2]
