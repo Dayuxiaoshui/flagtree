@@ -65,7 +65,7 @@ export FLAGTREE_BACKEND=mthreads
 python3 -m pip install . --no-build-isolation -v
 ```
 
-#### ARM China [aipu](https://github.com/FlagTree/flagtree/tree/triton_v3.3.x/third_party/aipu/)
+#### ARM China（安谋科技）[aipu](https://github.com/FlagTree/flagtree/tree/triton_v3.3.x/third_party/aipu/)
 
 - 对应的 Triton 版本为 3.3，基于 x64/arm64 平台
 - 推荐使用 Ubuntu 22.04
@@ -81,7 +81,7 @@ export FLAGTREE_BACKEND=aipu
 python3 -m pip install . --no-build-isolation -v
 ```
 
-#### [tsingmicro](https://github.com/FlagTree/flagtree/tree/triton_v3.3.x/third_party/tsingmicro/)
+#### Tsingmicro（清微智能）[tsingmicro](https://github.com/FlagTree/flagtree/tree/triton_v3.3.x/third_party/tsingmicro/)
 
 - 对应的 Triton 版本为 3.3，基于 x64 平台
 - 推荐使用 Ubuntu 20.04
@@ -182,6 +182,9 @@ export LLVM_SYSPATH=${YOUR_LLVM_DOWNLOAD_DIR}/llvm-7d5de303-ubuntu-x64
 #
 export LLVM_INCLUDE_DIRS=$LLVM_SYSPATH/include
 export LLVM_LIBRARY_DIR=$LLVM_SYSPATH/lib
+```
+
+```shell
 cd ${YOUR_CODE_DIR}/flagtree
 cd python  # For Triton 3.1, 3.2, 3.3, you need to enter the python directory to build
 git checkout main                                   # For Triton 3.1
@@ -204,15 +207,40 @@ cd ${YOUR_CODE_DIR}/flagtree/python
 sh README_offline_build.sh x86_64  # View readme
 # For Triton 3.1 (x64)
 wget https://baai-cp-web.ks3-cn-beijing.ksyuncs.com/trans/offline-build-pack-triton-3.1.x-linux-x64.zip
-sh scripts/offline_build_unpack.sh ./offline-build-pack-triton-3.1.x-linux-x64.zip ~/.triton
+sh scripts/offline_build_unpack.sh \
+    ./offline-build-pack-triton-3.1.x-linux-x64.zip ~/.triton
 # For Triton 3.2 (x64)
 wget https://baai-cp-web.ks3-cn-beijing.ksyuncs.com/trans/offline-build-pack-triton-3.2.x-linux-x64.zip
-sh scripts/offline_build_unpack.sh ./offline-build-pack-triton-3.2.x-linux-x64.zip ~/.triton
+sh scripts/offline_build_unpack.sh \
+    ./offline-build-pack-triton-3.2.x-linux-x64.zip ~/.triton
 # For Triton 3.2 (aarch64)
 wget https://baai-cp-web.ks3-cn-beijing.ksyuncs.com/trans/offline-build-pack-triton-3.2.x-linux-aarch64.zip
-sh scripts/offline_build_unpack.sh ./offline-build-pack-triton-3.2.x-linux-aarch64.zip ~/.triton
+sh scripts/offline_build_unpack.sh \
+    ./offline-build-pack-triton-3.2.x-linux-aarch64.zip ~/.triton
 # For Triton 3.3 (x64)
 wget https://baai-cp-web.ks3-cn-beijing.ksyuncs.com/trans/offline-build-pack-triton-3.3.x-linux-x64.zip
-sh scripts/offline_build_unpack.sh ./offline-build-pack-triton-3.3.x-linux-x64.zip ~/.triton
-# After executing the above script, the original ~/.triton directory will be renamed, and a new ~/.triton directory will be created to store the pre-downloaded packages.
+sh scripts/offline_build_unpack.sh \
+    ./offline-build-pack-triton-3.3.x-linux-x64.zip ~/.triton
+```
+
+执行完上述脚本后，原有的 ~/.triton 目录将被重命名，新的 ~/.triton 目录会被创建并存放预下载包。
+
+### Q&A
+
+#### Q: 安装完成后，运行时报错：version GLIBC or GLIBCXX not found
+
+A: 查询环境中的 libc.so.6、libstdc++.so.6.0.30 支持的 GLIBC / GLIBCXX 版本：
+
+```shell
+strings /lib/x86_64-linux-gnu/libc.so.6 |grep GLIBC
+strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30 | grep GLIBCXX
+```
+
+若支持该版本 GLIBC / GLIBCXX，那么也可尝试：
+
+```shell
+export LD_PRELOAD="/lib/x86_64-linux-gnu/libc.so.6"  # If GLIBC cannot be found
+export LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30"  # If GLIBCXX cannot be found
+export LD_PRELOAD="/lib/x86_64-linux-gnu/libc.so.6 \
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30"  # If neither GLIBC nor GLIBCXX can be found
 ```
